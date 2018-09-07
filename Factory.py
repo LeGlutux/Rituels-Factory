@@ -11,7 +11,7 @@ import os
 sourcepath = r"C:\Users\Léo-Paul\Desktop\Rituels Factory\Sources"
 
 
-for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
+for t in range(): # choix du niveau 0 = 6ème ... 3 = 3ème
 
     if t == 0:
         classe = '6ème'
