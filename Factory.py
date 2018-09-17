@@ -46,6 +46,7 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
 # Position flèche slide 1
     
     Top_Fleche_1 = 1700808
+    Top_Fleche_2 = 1196752
     Dist_Fleche = 969000
     
 
@@ -53,6 +54,7 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
         for i in range(5):
             prs = Presentation(str(sourcepath)+'\Matrix ' + str(classe) + '.pptx')
             prs.slides[0].shapes[2].top = 1700808 + i*Dist_Fleche
+            prs.slides[1].shapes[5].top = 1196752 + i*Dist_Fleche
             if i == 4:
 # Explosion éval
                     
@@ -77,7 +79,7 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
             for k in range(5):
                 slide = prs.slides[2+k]
                 image_path = r"C:\Users\Léo-Paul\Desktop\Rituels Factory\Sources\Images\\"+ str(classe) + "\\" + str(j+1) + "-"+str(i+1)+"-"+str(k+1)+".png"
-                if os.path.exists(image_path):
+                if os.path.exists(image_path): # Ajout d'images
                     shape = slide.shapes[0]
                     pic = shape.insert_picture(image_path)
              
@@ -89,7 +91,7 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
                 run.text = str(data[5*j+i][k+1])
                 font = run.font
                 font.name = 'Calibri'
-                if  len(data[i][k+1]) < 12 :
+                if  len(data[5*j + i][k+1]) < 20 :
                     
                     font.size = Pt(68)
                     font.bold = True
