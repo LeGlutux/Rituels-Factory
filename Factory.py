@@ -74,7 +74,42 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
                 line.color.brightness = 1.0  # % light                
                 line.width = Pt(0.0)
                 
-            
+# Suppression des slides en trop (temps de réponse)
+  
+                answer_time = sheet.row_values(j*5 + i + 1, 6, end_colx=11)
+                answer_time.append(text)
+                list = []
+                ranges = 5 # nombres de temps différents prévus
+                for question_number in range (5):
+                    time = answer_time[question_number]
+                    if time == 15 :
+                        range_of_this_time = 0
+                    if time == 15 :
+                        range_of_this_time = 1
+                    if time == 15 :
+                        range_of_this_time = 2
+                    if time == 15 :
+                        range_of_this_time = 3
+                    if time == 15 :
+                        range_of_this_time = 4
+                    ranges_to_delete = [0,1,2,3,4]
+                    del ranges_to_delete[range_of_this_time]
+                    for k in ranges_to_delete :
+                        slide_to_delete = 1 + 5*question_number + k
+                        list.append(slide_to_delete)
+        
+            list = sorted(list)
+            slides_to_delete = []
+
+            for i in range(len(list)-1,-1,-1):
+                slides_to_delete.append(list[i])
+        
+            for slide_to_delete in slides_to_delete:        
+                rId = prs.slides._sldIdLst[slide_to_delete+1].rId
+                prs.part.drop_rel(rId)
+                del prs.slides._sldIdLst[slide_to_delete+1]
+   
+    
 # Slide de calcul
             for k in range(5):
                 slide = prs.slides[2+k]
@@ -112,3 +147,11 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
                 else:
                     prs.save(str(pathout)+"\-" +str(j+1)+ "- " + str(data[j*5][0])+"\Rituel "+str(i+1)+'.pptx')
                 
+                
+
+
+answer_time = []
+for row_index in range(1, 6):
+                    text = sheet.row_values(row_index, 6, end_colx=11)
+                    answer_time.append(text)
+print(answer_time)
