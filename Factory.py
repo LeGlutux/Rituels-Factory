@@ -46,6 +46,7 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
 # Position flèche slide 1
     
     Top_Fleche_1 = 1700808
+    Top_Fleche_2 = 1196752
     Dist_Fleche = 969000
     
 
@@ -53,6 +54,7 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
         for i in range(5):
             prs = Presentation(str(sourcepath)+'\Matrix ' + str(classe) + '.pptx')
             prs.slides[0].shapes[2].top = 1700808 + i*Dist_Fleche
+            prs.slides[1].shapes[5].top = 1196752 + i*Dist_Fleche
             if i == 4:
 # Explosion éval
                     
@@ -72,12 +74,49 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
                 line.color.brightness = 1.0  # % light                
                 line.width = Pt(0.0)
                 
-            
+# Suppression des slides en trop (temps de réponse)
+  
+                answer_time = sheet.row_values(j*5 + i + 1, 6, end_colx=11)
+                answer_time.append(text)
+                list = []
+                ranges = 5 # nombres de temps différents prévus
+                for question_number in range (5):
+                    time = answer_time[question_number]
+                    if time == 15 :
+                        range_of_this_time = 0
+                    if time == 15 :
+                        range_of_this_time = 1
+                    if time == 15 :
+                        range_of_this_time = 2
+                    if time == 15 :
+                        range_of_this_time = 3
+                    if time == 15 :
+                        range_of_this_time = 4
+                    else:
+                        print(error)
+                    ranges_to_delete = [0,1,2,3,4]
+                    del ranges_to_delete[range_of_this_time]
+                    for k in ranges_to_delete :
+                        slide_to_delete = 1 + 5*question_number + k
+                        list.append(slide_to_delete)
+        
+            list = sorted(list)
+            slides_to_delete = []
+
+            for i in range(len(list)-1,-1,-1):
+                slides_to_delete.append(list[i])
+        
+            for slide_to_delete in slides_to_delete:        
+                rId = prs.slides._sldIdLst[slide_to_delete+1].rId
+                prs.part.drop_rel(rId)
+                del prs.slides._sldIdLst[slide_to_delete+1]
+   
+    
 # Slide de calcul
             for k in range(5):
                 slide = prs.slides[2+k]
                 image_path = r"C:\Users\Léo-Paul\Desktop\Rituels Factory\Sources\Images\\"+ str(classe) + "\\" + str(j+1) + "-"+str(i+1)+"-"+str(k+1)+".png"
-                if os.path.exists(image_path):
+                if os.path.exists(image_path): # Ajout d'images
                     shape = slide.shapes[0]
                     pic = shape.insert_picture(image_path)
              
@@ -89,7 +128,7 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
                 run.text = str(data[5*j+i][k+1])
                 font = run.font
                 font.name = 'Calibri'
-                if  len(data[i][k+1]) < 12 :
+                if  len(data[5*j + i][k+1]) < 20 :
                     
                     font.size = Pt(68)
                     font.bold = True
@@ -109,4 +148,5 @@ for t in range(4): # choix du niveau 0 = 6ème ... 3 = 3ème
                     prs.save(str(pathout)+"\-" +str(j+1)+ "- " + str(data[j*5][0])+"\zÉvaluation.pptx")
                 else:
                     prs.save(str(pathout)+"\-" +str(j+1)+ "- " + str(data[j*5][0])+"\Rituel "+str(i+1)+'.pptx')
+                
                 
